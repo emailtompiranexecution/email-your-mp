@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Email Your MP</title>
+  <style>
+    :root {
+      --bg: #f5f6f8; --card: #ffffff; --text: #1a1a1a; --muted: #666;
+      --accent: #b3242b; --accent-dark: #8f1c22; --border: #e2e4e8; --error: #b3242b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Vazirmatn", Tahoma, sans-serif;
+      background: var(--bg); color: var(--text); display: flex; justify-content: center;
+      padding: 2rem 1rem; line-height: 1.6;
+    }
+    .wrap { width: 100%; max-width: 620px; }
+    .topbar { display: flex; justify-content: flex-end; margin-bottom: .5rem; }
+    .lang-toggle { display: inline-flex; border: 1px solid var(--border); border-radius: 999px; overflow: hidden; background: #fff; }
+    .lang-toggle button { background: #fff; color: var(--muted); border: 0; padding: .35rem .9rem; font-size: .85rem; font-weight: 600; cursor: pointer; }
+    .lang-toggle button.active { background: var(--accent); color: #fff; }
+    h1 { font-size: 1.6rem; margin: 0 0 .25rem; }
+    h2 { font-size: 1.05rem; margin: 0 0 .75rem; }
+    p.lead { color: var(--muted); margin: 0 0 1.5rem; }
+    label { display: block; font-weight: 600; font-size: .9rem; margin: 0 0 .35rem; }
+    input.postal { width: 100%; padding: .7rem; font-size: 1rem; border: 1px solid var(--border); border-radius: 8px; text-transform: uppercase; }
+    .row { display: flex; gap: .5rem; }
+    .row input { flex: 1; }
+    button.primary, .send-btn button {
+      padding: .75rem 1.25rem; font-size: 1rem; font-weight: 600; border: 0; border-radius: 8px;
+      background: var(--accent); color: #fff; cursor: pointer; white-space: nowrap;
+    }
+    button.primary:hover, .send-btn button:hover { background: var(--accent-dark); }
+    button.primary:disabled { opacity: .55; cursor: default; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-top: 1rem; }
+    .preview { background: #fafbfc; border: 1px solid var(--border); border-radius: 8px; padding: .9rem 1rem; white-space: pre-wrap; font-size: .92rem; color: #333; max-height: 260px; overflow: auto; }
+    .send-note { font-size: .8rem; color: var(--muted); margin-top: .6rem; }
+    .mp-line { font-weight: 600; margin: 0 0 .1rem; }
+    .mp-sub { color: var(--muted); font-size: .9rem; margin: 0 0 1rem; }
+    .send-btn { display: inline-block; text-decoration: none; width: 100%; }
+    .send-btn button { width: 100%; }
+    .msg { margin-top: 1rem; color: var(--muted); }
+    .msg.error { color: var(--error); }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: .9rem; }
+    figure.person { margin: 0; text-align: center; }
+    .photo { width: 100%; aspect-ratio: 1 / 1; border-radius: 10px; background: #e7e9ee center/cover no-repeat; display: flex; align-items: center; justify-content: center; color: #9aa0aa; overflow: hidden; }
+    .pname { display: block; font-weight: 600; font-size: .9rem; margin-top: .45rem; }
+    .pstatus { display: inline-block; font-size: .72rem; color: var(--accent); margin-top: .1rem; }
+    .pstatus.executed { color: #333; font-weight: 600; }
+    .counter { text-align: center; font-weight: 600; color: var(--accent); margin-top: 1.25rem; }
+    .footer { text-align: center; font-size: .82rem; color: var(--muted); margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+    .footer strong { color: var(--text); }
+    body.fa { direction: rtl; }
+    body.fa .topbar { justify-content: flex-start; }
+    body.fa input.postal { direction: ltr; text-align: left; }
+    .ltr { direction: ltr; unicode-bidi: isolate; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="lang-toggle">
+        <button id="langEn" class="active" type="button">EN</button>
+        <button id="langFa" type="button">فارسی</button>
+      </div>
+    </div>
+
+    <h1 id="campaignTitle">Email Your MP</h1>
+    <p class="lead" id="lead"></p>
+
+    <div class="card" id="galleryCard" style="display:none;">
+      <h2 id="galleryHeading"></h2>
+      <div class="gallery" id="gallery"></div>
+    </div>
+
+    <div class="card">
+      <h2 id="messageHeading"></h2>
+      <div id="msgPreview" class="preview"></div>
+      <div class="send-note" id="sendNote"></div>
+    </div>
+
+    <div class="card">
+      <label for="postal" id="postalLabel"></label>
+      <div class="row">
+        <input id="postal" class="postal" type="text" inputmode="text"
+               autocomplete="postal-code" placeholder="e.g. T2V 0M2" maxlength="7" dir="ltr" />
+        <button id="findBtn" class="primary" type="button"></button>
+      </div>
+      <div id="results"></div>
+    </div>
+
+    <div class="counter" id="counter"></div>
+    <div class="footer" id="footer"></div>
+  </div>
+
+  <script>
+  (function () {
+    const CA_POSTAL = /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z]\s?\d[ABCEGHJ-NPRSTV-Z]\d$/i;
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"']/g, c =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    const PHOTO_FOLDER = 'photo';
+
+    // ------- content loaded from files (see load() at the bottom) -------
+    let EN = { subject: '', body: '' };   // English email — this is what is SENT
+    let FA = { subject: '', body: '' };   // Farsi email — DISPLAY ONLY
+    let people = [];
+
+    // ------- page-chrome strings + labels -------
+    const T = {
+      en: {
+        title: "Halt the executions in Iran",
+        lead: "Add your voice. Enter your postal code and we'll open a pre-written email to your Member of Parliament — just review and hit send.",
+        gallery: "The people this is about",
+        message: "The message",
+        postal: "Your postal code",
+        find: "Find my MP",
+        sendNote: "The email is always sent in English, addressed to your own MP. Nothing sends until you press send in your email app.",
+        sendTo: name => "Send email to " + name,
+        searching: "Searching…",
+        badPostal: "Please enter a valid Canadian postal code (e.g. T2V 0M2).",
+        notFound: "No results for that postal code — double-check and try again.",
+        noMp: "No federal MP found for that postal code.",
+        noEmail: "No public email is listed for this MP.",
+        oops: "Something went wrong looking that up. Please try again.",
+        counter: n => n + (n === 1 ? " email sent so far" : " emails sent so far"),
+        footer: "We don't collect anything. No accounts, no tracking, no database. Your postal code is used only to look up your MP and is never stored or sent to us. The email opens in your own email app, and nothing is sent until you press send yourself.",
+        greeting: name => "Dear " + (name || "Member of Parliament") + ",",
+        subjectLabel: "Subject",
+        statusExecuted: "Executed",
+        statusRisk: "At risk of execution"
+      },
+      fa: {
+        title: "اعدام‌ها در ایران متوقف شود",
+        lead: "صدای خود را اضافه کنید. کد پستی خود را وارد کنید تا ایمیلی از پیش‌نوشته به نمایندهٔ پارلمان شما باز شود — فقط مرور کنید و ارسال را بزنید.",
+        gallery: "افرادی که این کارزار دربارهٔ آنهاست",
+        message: "متن ایمیل",
+        postal: "کد پستی شما",
+        find: "یافتن نمایندهٔ من",
+        sendNote: "ایمیل همیشه به زبان انگلیسی و به نمایندهٔ خودِ شما ارسال می‌شود. تا زمانی که در برنامهٔ ایمیل خود دکمهٔ ارسال را نزنید، چیزی فرستاده نمی‌شود.",
+        sendTo: name => "ارسال ایمیل به " + name,
+        searching: "در حال جستجو…",
+        badPostal: "لطفاً یک کد پستی معتبر کانادایی وارد کنید (مثلاً T2V 0M2).",
+        notFound: "نتیجه‌ای برای این کد پستی یافت نشد — دوباره بررسی کنید.",
+        noMp: "نماینده‌ای برای این کد پستی یافت نشد.",
+        noEmail: "ایمیل عمومی برای این نماینده ثبت نشده است.",
+        oops: "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
+        counter: n => "تاکنون " + n + " ایمیل ارسال شده است",
+        footer: "ما هیچ اطلاعاتی جمع‌آوری نمی‌کنیم. بدون حساب کاربری، بدون ردیابی، بدون پایگاه داده. کد پستی شما فقط برای یافتن نماینده‌تان استفاده می‌شود و هرگز ذخیره یا برای ما ارسال نمی‌شود. ایمیل در برنامهٔ ایمیل خودتان باز می‌شود و تا زمانی که خودتان ارسال را نزنید چیزی فرستاده نمی‌شود.",
+        greeting: name => "نمایندهٔ محترم" + (name ? ("، " + name) : " پارلمان") + "،",
+        subjectLabel: "موضوع",
+        statusExecuted: "اعدام‌شده",
+        statusRisk: "در خطر اعدام"
+      }
+    };
+
+    const faDigits = s => String(s).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+    let lang = 'en';
+    let lastMP = null;
+
+    // ---------- counter (per-browser; swap recordSend/readCount for a shared backend) ----------
+    const COUNTER_KEY = 'emailtomp_sent_count';
+    function readCount() { return parseInt(localStorage.getItem(COUNTER_KEY) || '0', 10) || 0; }
+    function recordSend() {
+      const n = readCount() + 1;
+      try { localStorage.setItem(COUNTER_KEY, String(n)); } catch (e) {}
+      renderCounter();
+    }
+    function renderCounter() {
+      const txt = T[lang].counter(readCount());
+      $('counter').textContent = lang === 'fa' ? faDigits(txt) : txt;
+    }
+
+    // ---------- message ----------
+    function content() { return lang === 'fa' ? FA : EN; }
+    function previewText(mpName) {
+      const c = content();
+      const subj = c.subject ? (T[lang].subjectLabel + ': ' + c.subject + '\n\n') : '';
+      return subj + T[lang].greeting(mpName) + '\n\n' + (c.body || '');
+    }
+    function emailSubject() { return EN.subject || ''; }              // always English
+    function emailBody(mpName) { return T.en.greeting(mpName) + '\n\n' + (EN.body || ''); } // always English
+
+    // ---------- gallery ----------
+    const SILHOUETTE =
+      '<svg width="46" height="46" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+      '<path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5Z"/></svg>';
+    function renderGallery() {
+      if (!people.length) { $('galleryCard').style.display = 'none'; return; }
+      $('galleryCard').style.display = '';
+      $('gallery').innerHTML = people.map(p => {
+        const isExec = /exec/i.test(p.status || '');
+        const statusTxt = isExec ? T[lang].statusExecuted : T[lang].statusRisk;
+        const src = p.file ? PHOTO_FOLDER + '/' + encodeURIComponent(p.file) : '';
+        const photoStyle = src ? ' style="background-image:url(\'' + src + '\')"' : '';
+        const inner = src ? '' : SILHOUETTE;
+        return '<figure class="person">' +
+          '<div class="photo"' + photoStyle + '>' + inner + '</div>' +
+          '<span class="pname ltr">' + esc(p.name || '') + '</span>' +
+          '<span class="pstatus' + (isExec ? ' executed' : '') + '">' + esc(statusTxt) + '</span>' +
+          '</figure>';
+      }).join('');
+    }
+
+    // ---------- MP lookup ----------
+    const results = $('results');
+    function show(html, isError) {
+      results.innerHTML = '<div class="msg' + (isError ? ' error' : '') + '">' + html + '</div>';
+    }
+    function renderMPs(mps) {
+      lastMP = mps.length === 1 ? mps[0] : null;
+      results.innerHTML = mps.map(mp => {
+        if (!mp.email) {
+          return '<div style="margin-top:1rem;"><p class="mp-line ltr">' + esc(mp.name) + '</p>' +
+            '<p class="mp-sub ltr">' + esc(mp.district_name || '') + '</p>' +
+            '<div class="msg error">' + esc(T[lang].noEmail) + '</div></div>';
+        }
+        const mailto = 'mailto:' + encodeURIComponent(mp.email) +
+          '?subject=' + encodeURIComponent(emailSubject()) +
+          '&body=' + encodeURIComponent(emailBody(mp.name));
+        const last = String(mp.name).split(' ').slice(-1)[0];
+        return '<div style="margin-top:1rem;">' +
+          '<p class="mp-line ltr">' + esc(mp.name) + '</p>' +
+          '<p class="mp-sub ltr">' + esc(mp.district_name || '') +
+            (mp.party_name ? ' · ' + esc(mp.party_name) : '') + '</p>' +
+          '<a class="send-btn" href="' + mailto + '" data-send="1">' +
+            '<button type="button">' + esc(T[lang].sendTo(last)) + '</button></a>' +
+          '</div>';
+      }).join('');
+      Array.prototype.forEach.call(results.querySelectorAll('[data-send]'), a =>
+        a.addEventListener('click', recordSend));
+      renderPreview();
+    }
+
+    async function lookup() {
+      const raw = $('postal').value.trim().toUpperCase().replace(/\s+/g, '');
+      if (!CA_POSTAL.test(raw)) { show(esc(T[lang].badPostal), true); return; }
+      $('findBtn').disabled = true;
+      show(esc(T[lang].searching));
+      try {
+        const res = await fetch('https://represent.opennorth.ca/postcodes/' + raw + '/');
+        if (res.status === 404) { show(esc(T[lang].notFound), true); return; }
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        const seen = new Set();
+        const mps = []
+          .concat(data.representatives_centroid || [], data.representatives_concordance || [])
+          .filter(r => r.representative_set_name === 'House of Commons')
+          .filter(r => { const k = r.name + r.district_name; if (seen.has(k)) return false; seen.add(k); return true; });
+        if (!mps.length) { show(esc(T[lang].noMp), true); return; }
+        renderMPs(mps);
+      } catch (e) {
+        show(esc(T[lang].oops), true);
+      } finally {
+        $('findBtn').disabled = false;
+      }
+    }
+
+    // ---------- render / language ----------
+    function renderPreview() {
+      $('msgPreview').textContent = previewText(lastMP ? lastMP.name : null);
+      $('msgPreview').setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
+    }
+    function applyLanguage() {
+      const s = T[lang];
+      document.body.className = lang === 'fa' ? 'fa' : '';
+      document.documentElement.lang = lang;
+      $('campaignTitle').textContent = s.title;
+      document.title = s.title;
+      $('lead').textContent = s.lead;
+      $('galleryHeading').textContent = s.gallery;
+      $('messageHeading').textContent = s.message;
+      $('postalLabel').textContent = s.postal;
+      $('findBtn').textContent = s.find;
+      $('sendNote').textContent = s.sendNote;
+      const dot = s.footer.indexOf('.');
+      $('footer').innerHTML = '<strong>' + esc(s.footer.slice(0, dot + 1)) + '</strong>' + esc(s.footer.slice(dot + 1));
+      $('langEn').classList.toggle('active', lang === 'en');
+      $('langFa').classList.toggle('active', lang === 'fa');
+      renderGallery();
+      renderPreview();
+      renderCounter();
+      if (lastMP) renderMPs([lastMP]);
+    }
+
+    // ---------- load content from files ----------
+    function parseEmail(text) {
+      const lines = String(text).replace(/\r/g, '').split('\n');
+      const subject = (lines[0] || '').trim();
+      let rest = lines.slice(1);
+      while (rest.length && rest[0].trim() === '') rest.shift();
+      return { subject, body: rest.join('\n').replace(/\s+$/, '') };
+    }
+    async function load() {
+      try {
+        const [enT, faT, ph] = await Promise.all([
+          fetch('content/email-en.txt').then(r => r.text()),
+          fetch('content/email-fa.txt').then(r => r.text()),
+          fetch('photos.json').then(r => r.ok ? r.json() : []).catch(() => [])
+        ]);
+        EN = parseEmail(enT);
+        FA = parseEmail(faT);
+        people = Array.isArray(ph) ? ph : [];
+      } catch (e) {
+        EN = { subject: '', body: '(Could not load the email text.)' };
+        FA = EN;
+      }
+      applyLanguage();
+    }
+
+    $('langEn').addEventListener('click', () => { lang = 'en'; applyLanguage(); });
+    $('langFa').addEventListener('click', () => { lang = 'fa'; applyLanguage(); });
+    $('findBtn').addEventListener('click', lookup);
+    $('postal').addEventListener('keydown', e => { if (e.key === 'Enter') lookup(); });
+
+    load();
+  })();
+  </script>
+</body>
+</html>
