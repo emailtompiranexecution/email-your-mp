@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The people this concerns</title>
+  <style>
+    :root {
+      --bg: #f5f6f8; --card: #ffffff; --text: #1a1a1a; --muted: #666;
+      --accent: #b3242b; --accent-dark: #8f1c22; --border: #e2e4e8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Vazirmatn", Tahoma, sans-serif;
+      background: var(--bg); color: var(--text); display: flex; justify-content: center;
+      padding: 2rem 1rem; line-height: 1.6;
+    }
+    .wrap { width: 100%; max-width: 760px; }
+    .topbar { display: flex; justify-content: flex-end; margin-bottom: .5rem; }
+    .lang-toggle { display: inline-flex; border: 1px solid var(--border); border-radius: 999px; overflow: hidden; background: #fff; }
+    .lang-toggle button { background: #fff; color: var(--muted); border: 0; padding: .35rem .9rem; font-size: .85rem; font-weight: 600; cursor: pointer; }
+    .lang-toggle button.active { background: var(--accent); color: #fff; }
+    h1 { font-size: 1.7rem; margin: 0 0 .35rem; }
+    p.lead { color: var(--muted); margin: 0 0 1.75rem; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.25rem; }
+    figure.person { margin: 0; text-align: center; }
+    .photo {
+      width: 100%; aspect-ratio: 3 / 4; border-radius: 12px;
+      background: #e7e9ee center/cover no-repeat; display: flex; align-items: center; justify-content: center;
+      color: #9aa0aa; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    }
+    .pname { display: block; font-weight: 600; font-size: 1rem; margin-top: .6rem; }
+    .pstatus { display: inline-block; font-size: .82rem; color: var(--accent); margin-top: .15rem; }
+    .pstatus.executed { color: #333; font-weight: 600; }
+    .cta { text-align: center; margin: 2.25rem 0 .5rem; }
+    .cta a {
+      display: inline-block; text-decoration: none; background: var(--accent); color: #fff;
+      font-weight: 600; padding: .8rem 1.5rem; border-radius: 8px;
+    }
+    .cta a:hover { background: var(--accent-dark); }
+    body.fa { direction: rtl; }
+    body.fa .topbar { justify-content: flex-start; }
+    .ltr { direction: ltr; unicode-bidi: isolate; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="lang-toggle">
+        <button id="langEn" class="active" type="button">EN</button>
+        <button id="langFa" type="button">فارسی</button>
+      </div>
+    </div>
+    <h1 id="title"></h1>
+    <p class="lead" id="lead"></p>
+    <div class="gallery" id="gallery"></div>
+    <div class="cta"><a id="ctaBtn" href="index.html"></a></div>
+  </div>
+
+  <script>
+  (function () {
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const PHOTO_FOLDER = 'photo';
+    let people = [];
+    let lang = 'en';
+
+    const T = {
+      en: {
+        title: "The people this concerns",
+        lead: "These are young people executed, or at imminent risk of execution, for protesting against the regime in Iran. Please remember their faces.",
+        executed: "Executed",
+        risk: "At risk of execution",
+        cta: "Email your MP →"
+      },
+      fa: {
+        title: "افرادی که این کارزار دربارهٔ آنهاست",
+        lead: "این‌ها جوانانی هستند که به‌خاطر اعتراض علیه حکومت ایران اعدام شده‌اند یا در خطر قریب‌الوقوع اعدام قرار دارند. لطفاً چهره‌های آنها را به یاد بسپارید.",
+        executed: "اعدام‌شده",
+        risk: "در خطر اعدام",
+        cta: "به نمایندهٔ خود ایمیل بزنید ←"
+      }
+    };
+
+    const SILHOUETTE =
+      '<svg width="56" height="56" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+      '<path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5Z"/></svg>';
+
+    function render() {
+      const s = T[lang];
+      document.body.className = lang === 'fa' ? 'fa' : '';
+      document.documentElement.lang = lang;
+      $('title').textContent = s.title;
+      document.title = s.title;
+      $('lead').textContent = s.lead;
+      $('ctaBtn').textContent = s.cta;
+      $('langEn').classList.toggle('active', lang === 'en');
+      $('langFa').classList.toggle('active', lang === 'fa');
+      $('gallery').innerHTML = people.map(p => {
+        const isExec = /exec/i.test(p.status || '');
+        const src = p.file ? PHOTO_FOLDER + '/' + encodeURIComponent(p.file) : '';
+        const style = src ? ' style="background-image:url(\'' + src + '\')"' : '';
+        return '<figure class="person">' +
+          '<div class="photo"' + style + '>' + (src ? '' : SILHOUETTE) + '</div>' +
+          '<span class="pname ltr">' + esc(p.name || '') + '</span>' +
+          '<span class="pstatus' + (isExec ? ' executed' : '') + '">' + esc(isExec ? s.executed : s.risk) + '</span>' +
+          '</figure>';
+      }).join('');
+    }
+
+    $('langEn').addEventListener('click', () => { lang = 'en'; render(); });
+    $('langFa').addEventListener('click', () => { lang = 'fa'; render(); });
+
+    fetch('photos.json').then(r => r.ok ? r.json() : []).then(d => { people = Array.isArray(d) ? d : []; render(); })
+      .catch(() => { people = []; render(); });
+  })();
+  </script>
+</body>
+</html>

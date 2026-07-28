@@ -203,16 +203,12 @@
       return subj + T[lang].greeting(mpName) + '\n\n' + (c.body || '');
     }
     function emailSubject() { return EN.subject || ''; }              // always English
-    // mailto cannot attach files, so we add clickable links to each person's photo
-    // (hosted on this site) so the MP can see their faces in one click.
+    // mailto cannot show images inline, so we add one clean link to a page that
+    // shows the faces and stories of the people this concerns.
     function photoLinks() {
       if (!people.length) return '';
-      const lines = people.map(p => {
-        const url = new URL(PHOTO_FOLDER + '/' + encodeURIComponent(p.file), location.href).href;
-        const tag = /exec/i.test(p.status || '') ? 'executed' : 'at risk of execution';
-        return '- ' + p.name + ' (' + tag + '): ' + url;
-      });
-      return '\n\nPlease look at the faces of the young people this concerns:\n' + lines.join('\n');
+      const url = new URL('people.html', location.href).href;
+      return '\n\nPlease see the young people this concerns — their faces and stories:\n' + url;
     }
     function emailBody(mpName) {                                        // always English
       return T.en.greeting(mpName) + '\n\n' + (EN.body || '') + photoLinks();
