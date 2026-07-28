@@ -1,0 +1,32 @@
+name: Weekly Amnesty review
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'   # every Monday 08:00 UTC
+  workflow_dispatch:        # allow running it manually from the Actions tab
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch Amnesty and build review report
+        run: node tools/amnesty-review.mjs
+
+      - name: Open a review issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          gh issue create \
+            --title "Weekly Amnesty review — $DATE" \
+            --body-file review.md
