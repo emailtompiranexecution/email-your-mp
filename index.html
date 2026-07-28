@@ -75,19 +75,19 @@
     </div>
 
     <div class="card">
-      <h2 id="messageHeading"></h2>
-      <div id="msgPreview" class="preview"></div>
-      <div class="send-note" id="sendNote"></div>
-    </div>
-
-    <div class="card">
       <label for="postal" id="postalLabel"></label>
       <div class="row">
         <input id="postal" class="postal" type="text" inputmode="text"
-               autocomplete="postal-code" placeholder="e.g. T2V 0M2" maxlength="7" dir="ltr" />
+               autocomplete="postal-code" maxlength="7" dir="ltr" />
         <button id="findBtn" class="primary" type="button"></button>
       </div>
       <div id="results"></div>
+    </div>
+
+    <div class="card">
+      <h2 id="messageHeading"></h2>
+      <div id="msgPreview" class="preview"></div>
+      <div class="send-note" id="sendNote"></div>
     </div>
 
     <div class="counter" id="counter"></div>
@@ -115,7 +115,7 @@
         lead: "Add your voice. Enter your postal code and we'll open a pre-written email to your Member of Parliament — just review and hit send.",
         gallery: "The people this is about",
         message: "The message",
-        postal: "Your postal code",
+        postal: "Your postal code to find your Member of Parliament",
         find: "Find my MP",
         sendNote: "The email is always sent in English, addressed to your own MP. Nothing sends until you press send in your email app.",
         sendTo: name => "Send email to " + name,
@@ -137,7 +137,7 @@
         lead: "صدای خود را اضافه کنید. کد پستی خود را وارد کنید تا ایمیلی از پیش‌نوشته به نمایندهٔ پارلمان شما باز شود — فقط مرور کنید و ارسال را بزنید.",
         gallery: "افرادی که این کارزار دربارهٔ آنهاست",
         message: "متن ایمیل",
-        postal: "کد پستی شما",
+        postal: "کد پستی شما برای یافتن نمایندهٔ پارلمان",
         find: "یافتن نمایندهٔ من",
         sendNote: "ایمیل همیشه به زبان انگلیسی و به نمایندهٔ خودِ شما ارسال می‌شود. تا زمانی که در برنامهٔ ایمیل خود دکمهٔ ارسال را نزنید، چیزی فرستاده نمی‌شود.",
         sendTo: name => "ارسال ایمیل به " + name,
@@ -160,16 +160,38 @@
     let lang = 'en';
     let lastMP = null;
 
-    // ---------- counter (per-browser; swap recordSend/readCount for a shared backend) ----------
-    const COUNTER_KEY = 'emailtomp_sent_count';
-    function readCount() { return parseInt(localStorage.getItem(COUNTER_KEY) || '0', 10) || 0; }
-    function recordSend() {
-      const n = readCount() + 1;
-      try { localStorage.setItem(COUNTER_KEY, String(n)); } catch (e) {}
+    // ---------- shared counter ----------
+    // A single global total shared by everyone, stored by a tiny counter service
+    // (only an integer is stored — no personal data). Persists across refreshes and
+    // devices. A local copy is kept as a fallback if the service is briefly offline.
+    const COUNTER_NS = 'emailtompmp-iran-live';
+    const COUNTER_KEY = 'sends';
+    const COUNTER_LOCAL = 'emailtomp_sent_count';
+    const COUNTER_GET = 'https://abacus.jasoncameron.dev/get/' + COUNTER_NS + '/' + COUNTER_KEY;
+    const COUNTER_HIT = 'https://abacus.jasoncameron.dev/hit/' + COUNTER_NS + '/' + COUNTER_KEY;
+    let sentCount = parseInt(localStorage.getItem(COUNTER_LOCAL) || '0', 10) || 0;
+
+    function setCount(n) {
+      if (typeof n === 'number' && n >= sentCount) {
+        sentCount = n;
+        try { localStorage.setItem(COUNTER_LOCAL, String(n)); } catch (e) {}
+      }
       renderCounter();
     }
+    async function loadCount() {
+      try {
+        const j = await fetch(COUNTER_GET).then(r => r.json());
+        if (j && typeof j.value === 'number') setCount(j.value);
+      } catch (e) { /* keep local fallback */ }
+    }
+    function recordSend() {
+      setCount(sentCount + 1);            // optimistic, instant
+      fetch(COUNTER_HIT).then(r => r.json())
+        .then(j => { if (j && typeof j.value === 'number') setCount(j.value); })
+        .catch(() => {});
+    }
     function renderCounter() {
-      const txt = T[lang].counter(readCount());
+      const txt = T[lang].counter(sentCount);
       $('counter').textContent = lang === 'fa' ? faDigits(txt) : txt;
     }
 
@@ -181,7 +203,20 @@
       return subj + T[lang].greeting(mpName) + '\n\n' + (c.body || '');
     }
     function emailSubject() { return EN.subject || ''; }              // always English
-    function emailBody(mpName) { return T.en.greeting(mpName) + '\n\n' + (EN.body || ''); } // always English
+    // mailto cannot attach files, so we add clickable links to each person's photo
+    // (hosted on this site) so the MP can see their faces in one click.
+    function photoLinks() {
+      if (!people.length) return '';
+      const lines = people.map(p => {
+        const url = new URL(PHOTO_FOLDER + '/' + encodeURIComponent(p.file), location.href).href;
+        const tag = /exec/i.test(p.status || '') ? 'executed' : 'at risk of execution';
+        return '- ' + p.name + ' (' + tag + '): ' + url;
+      });
+      return '\n\nPlease look at the faces of the young people this concerns:\n' + lines.join('\n');
+    }
+    function emailBody(mpName) {                                        // always English
+      return T.en.greeting(mpName) + '\n\n' + (EN.body || '') + photoLinks();
+    }
 
     // ---------- gallery ----------
     const SILHOUETTE =
@@ -316,6 +351,7 @@
     $('postal').addEventListener('keydown', e => { if (e.key === 'Enter') lookup(); });
 
     load();
+    loadCount();
   })();
   </script>
 </body>
