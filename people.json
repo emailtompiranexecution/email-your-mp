@@ -1,6 +1,6 @@
 [
-  { "name": "Amir Hossein Safari",         "status": "executed", "photo": "", "age": "", "note": "" },
-  { "name": "Abolfazl Sepahi",             "status": "executed", "photo": "", "age": "", "note": "" },
+  { "name": "Amir Hossein Safari",         "status": "executed", "photo": "Amir Hossein Safari.jpg", "age": "28", "note": "Publicly hanged on 28 July 2026 in Isfahan's Alikhani Square." },
+  { "name": "Abolfazl Sepahi",             "status": "executed", "photo": "Abolfazl Sepahi.jpg", "age": "23", "note": "Publicly hanged on 28 July 2026 in Isfahan, alongside Amir Hossein Safari." },
   { "name": "Erfan Esfandiari",            "status": "executed", "photo": "", "age": "", "note": "" },
   { "name": "Gol-Mohammad Mohammadi",      "status": "executed", "photo": "", "age": "", "note": "" },
   { "name": "Mohammad Amini Dehaghani",    "status": "executed", "photo": "", "age": "", "note": "" },
@@ -16,7 +16,7 @@
   { "name": "Pouya Ghobadi",               "status": "executed", "photo": "", "age": "", "note": "" },
 
   { "name": "Romina & Taraneh",            "status": "risk",     "photo": "", "age": "", "note": "" },
-  { "name": "Shervin Bagherian",           "status": "risk",     "photo": "", "age": "", "note": "Forcibly disappeared and tortured; a forced 'confession' was aired before his trial." },
+  { "name": "Shervin Bagherian",           "status": "risk",     "photo": "Shervin Bagherian.jpg", "age": "18", "note": "Held incommunicado 21 days and tortured; a forced 'confession' was aired before his trial." },
   { "name": "Ali Dashti",                  "status": "risk",     "photo": "", "age": "", "note": "" },
   { "name": "Alireza Raisi",               "status": "risk",     "photo": "", "age": "", "note": "" },
   { "name": "Abolfazl Ebrahimi",           "status": "risk",     "photo": "", "age": "", "note": "" },
@@ -25,10 +25,10 @@
   { "name": "Amirhossein Maleki",          "status": "risk",     "photo": "", "age": "", "note": "" },
   { "name": "Ghaem Hosseini",              "status": "risk",     "photo": "", "age": "", "note": "" },
   { "name": "Arman Marefati",              "status": "risk",     "photo": "", "age": "", "note": "" },
-  { "name": "Benyamin Naghdi",             "status": "risk",     "photo": "", "age": "", "note": "Martial-arts athlete; forcibly disappeared for over 50 days." },
-  { "name": "Peyman Ganji",                "status": "risk",     "photo": "", "age": "", "note": "Says he 'confessed' under torture and retracted it at trial; denies the charges." },
-  { "name": "Erfan Amiri",                 "status": "risk",     "photo": "", "age": "", "note": "A child at the time of the alleged offence." },
+  { "name": "Benyamin Naghdi",             "status": "risk",     "photo": "Benyamin Naghdi.jpg", "age": "26", "note": "Kickboxing and Muay Thai champion; a coerced 'confession' was aired by state TV the day after his arrest." },
+  { "name": "Peyman Ganji",                "status": "risk",     "photo": "Peyman Ganji.jpg", "age": "33", "note": "Says he 'confessed' under torture and retracted it at trial; denies the charges." },
+  { "name": "Erfan Amiri",                 "status": "risk",     "photo": "Erfan Amiri.jpg", "age": "17", "note": "A child — 17 at the time of the alleged offence, whose execution international law absolutely prohibits." },
   { "name": "Mansour Jafari",              "status": "risk",     "photo": "", "age": "", "note": "A child at the time of the alleged offence." },
-  { "name": "Matin Mohammadi",             "status": "risk",     "photo": "", "age": "", "note": "A child at the time of the alleged offence." },
+  { "name": "Matin Mohammadi",             "status": "risk",     "photo": "", "age": "17", "note": "A child at the time of the alleged offence." },
   { "name": "Afrasyab",                    "status": "risk",     "photo": "", "age": "", "note": "" }
 ]
