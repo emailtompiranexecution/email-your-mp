@@ -84,7 +84,7 @@
       <div id="results"></div>
     </div>
 
-    <div class="card">
+    <div class="card" id="messageCard" style="display:none;">
       <h2 id="messageHeading"></h2>
       <div id="msgPreview" class="preview"></div>
       <div class="send-note" id="sendNote"></div>
@@ -265,6 +265,7 @@
       }).join('');
       Array.prototype.forEach.call(results.querySelectorAll('[data-send]'), a =>
         a.addEventListener('click', recordSend));
+      $('messageCard').style.display = '';   // reveal the message only once an MP is found
       renderPreview();
     }
 
