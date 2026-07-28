@@ -1,15 +1,14 @@
-// Scans the photo folder and writes photos.json describing each person.
+// Builds photos.json (what the website loads) by MERGING:
+//   1. people.json  — the hand-edited master list of people (name, status, photo)
+//   2. the photo/   — any image files, so a dropped-in photo appears automatically
 //
-// Naming convention for files in the photo folder:
-//     <Name>-<status>.<ext>
-//   where <status> contains either "execut..." or "risk".
-//   Examples:
-//     Abolfazl-executed.jpg          -> name "Abolfazl",  status "executed"
-//     Amir Hossein Safari-risk.jpg   -> name "Amir Hossein Safari", status "risk"
+// To add people: edit people.json (see PEOPLE-HOWTO.md). To add a photo:
+// drop the image in the photo folder and put its filename in the person's
+// "photo" field — or just drop it in and it will be auto-added.
 //
 // Run:  node tools/gen-photos.mjs
 
-import { readdirSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -17,13 +16,12 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PHOTO_DIR = 'photo';
 const IMAGE_RE = /\.(jpe?g|png|webp|gif)$/i;
 
-function parse(file) {
-  const base = file.replace(/\.[^.]+$/, '');               // drop extension
-  const status = /exec/i.test(base) ? 'executed'
-               : /risk/i.test(base) ? 'risk'
-               : 'risk';
-  // remove the trailing status word (and separators) to get the display name
-  let name = base
+const normStatus = s => (/exec/i.test(s || '') ? 'executed' : 'risk');
+
+function parseFromFilename(file) {
+  const base = file.replace(/\.[^.]+$/, '');
+  const status = /exec/i.test(base) ? 'executed' : 'risk';
+  const name = base
     .replace(/[\s._-]*(executed|execution|executes|exec|at[\s._-]*risk|risk)[\s._-]*$/i, '')
     .replace(/[_]+/g, ' ')
     .replace(/\s+/g, ' ')
@@ -31,15 +29,36 @@ function parse(file) {
   return { file, name, status };
 }
 
-const files = readdirSync(join(root, PHOTO_DIR))
-  .filter(f => IMAGE_RE.test(f))
-  .sort((a, b) => a.localeCompare(b));
+let manual = [];
+try { manual = JSON.parse(readFileSync(join(root, 'people.json'), 'utf8')); }
+catch (e) { console.warn('No readable people.json — using photos only.'); }
 
-const people = files
-  .map(parse)
-  // skip files that don't yield a real name (e.g. a generic "Risk.png" banner)
-  .filter(p => p.name && !/^(executed|risk)$/i.test(p.name));
+const files = readdirSync(join(root, PHOTO_DIR)).filter(f => IMAGE_RE.test(f));
+const used = new Set();
+const out = [];
 
-writeFileSync(join(root, 'photos.json'), JSON.stringify(people, null, 2) + '\n');
-console.log('Wrote photos.json with ' + people.length + ' people:');
-people.forEach(p => console.log('  - ' + p.name + ' [' + p.status + ']  (' + p.file + ')'));
+// 1) the curated list (in the order written)
+for (const p of manual) {
+  const name = (p.name || '').trim();
+  if (!name) continue;
+  let photo = (p.photo || '').trim();
+  if (photo && !files.includes(photo)) {
+    console.warn('  ! photo not found for "' + name + '": ' + photo + '  (showing silhouette)');
+    photo = '';
+  }
+  if (photo) used.add(photo);
+  out.push({ file: photo, name, status: normStatus(p.status) });
+}
+
+// 2) any photos not already referenced -> auto-added from their filename
+for (const f of files.sort((a, b) => a.localeCompare(b))) {
+  if (used.has(f)) continue;
+  const parsed = parseFromFilename(f);
+  if (!parsed.name || /^(executed|risk)$/i.test(parsed.name)) continue; // skip generic (e.g. Risk.png)
+  out.push(parsed);
+}
+
+writeFileSync(join(root, 'photos.json'), JSON.stringify(out, null, 2) + '\n');
+console.log('Wrote photos.json: ' + out.length + ' people (' +
+  out.filter(p => p.file).length + ' with photos, ' +
+  out.filter(p => !p.file).length + ' with silhouette).');
