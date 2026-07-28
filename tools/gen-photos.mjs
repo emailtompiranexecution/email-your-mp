@@ -58,6 +58,10 @@ for (const f of files.sort((a, b) => a.localeCompare(b))) {
   out.push({ ...parsed, age: '', note: '' });
 }
 
+// People with a photo float to the top (stable — keeps existing order otherwise),
+// so the strongest, face-first entries lead the gallery.
+out.sort((a, b) => (b.file ? 1 : 0) - (a.file ? 1 : 0));
+
 writeFileSync(join(root, 'photos.json'), JSON.stringify(out, null, 2) + '\n');
 console.log('Wrote photos.json: ' + out.length + ' people (' +
   out.filter(p => p.file).length + ' with photos, ' +
