@@ -47,7 +47,7 @@ for (const p of manual) {
     photo = '';
   }
   if (photo) used.add(photo);
-  out.push({ file: photo, name, status: normStatus(p.status) });
+  out.push({ file: photo, name, status: normStatus(p.status), age: p.age || '', note: p.note || '' });
 }
 
 // 2) any photos not already referenced -> auto-added from their filename
@@ -55,7 +55,7 @@ for (const f of files.sort((a, b) => a.localeCompare(b))) {
   if (used.has(f)) continue;
   const parsed = parseFromFilename(f);
   if (!parsed.name || /^(executed|risk)$/i.test(parsed.name)) continue; // skip generic (e.g. Risk.png)
-  out.push(parsed);
+  out.push({ ...parsed, age: '', note: '' });
 }
 
 writeFileSync(join(root, 'photos.json'), JSON.stringify(out, null, 2) + '\n');

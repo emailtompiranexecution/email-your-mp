@@ -30,8 +30,10 @@
       color: #9aa0aa; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.08);
     }
     .pname { display: block; font-weight: 600; font-size: 1rem; margin-top: .6rem; }
-    .pstatus { display: inline-block; font-size: .82rem; color: var(--accent); margin-top: .15rem; }
+    .page { font-weight: 400; color: var(--muted); }
+    .pstatus { display: block; font-size: .82rem; color: var(--accent); margin-top: .15rem; }
     .pstatus.executed { color: #333; font-weight: 600; }
+    .pnote { display: block; font-size: .78rem; color: var(--muted); margin-top: .3rem; line-height: 1.4; }
     .cta { text-align: center; margin: 2.25rem 0 .5rem; }
     .cta a {
       display: inline-block; text-decoration: none; background: var(--accent); color: #fff;
@@ -71,6 +73,7 @@
         lead: "These are young people executed, or at imminent risk of execution, for protesting against the regime in Iran. Please remember their faces.",
         executed: "Executed",
         risk: "At risk of execution",
+        ageLabel: n => "Age " + n,
         cta: "Email your MP →"
       },
       fa: {
@@ -78,6 +81,7 @@
         lead: "این‌ها جوانانی هستند که به‌خاطر اعتراض علیه حکومت ایران اعدام شده‌اند یا در خطر قریب‌الوقوع اعدام قرار دارند. لطفاً چهره‌های آنها را به یاد بسپارید.",
         executed: "اعدام‌شده",
         risk: "در خطر اعدام",
+        ageLabel: n => n + " ساله",
         cta: "به نمایندهٔ خود ایمیل بزنید ←"
       }
     };
@@ -100,10 +104,13 @@
         const isExec = /exec/i.test(p.status || '');
         const src = p.file ? PHOTO_FOLDER + '/' + encodeURIComponent(p.file) : '';
         const style = src ? ' style="background-image:url(\'' + src + '\')"' : '';
+        const age = p.age ? ' <span class="page">· ' + esc(s.ageLabel(p.age)) + '</span>' : '';
+        const note = p.note ? '<span class="pnote">' + esc(p.note) + '</span>' : '';
         return '<figure class="person">' +
           '<div class="photo"' + style + '>' + (src ? '' : SILHOUETTE) + '</div>' +
-          '<span class="pname ltr">' + esc(p.name || '') + '</span>' +
+          '<span class="pname ltr">' + esc(p.name || '') + age + '</span>' +
           '<span class="pstatus' + (isExec ? ' executed' : '') + '">' + esc(isExec ? s.executed : s.risk) + '</span>' +
+          note +
           '</figure>';
       }).join('');
     }

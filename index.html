@@ -230,9 +230,10 @@
         const src = p.file ? PHOTO_FOLDER + '/' + encodeURIComponent(p.file) : '';
         const photoStyle = src ? ' style="background-image:url(\'' + src + '\')"' : '';
         const inner = src ? '' : SILHOUETTE;
+        const age = p.age ? ', ' + esc(p.age) : '';
         return '<figure class="person">' +
           '<div class="photo"' + photoStyle + '>' + inner + '</div>' +
-          '<span class="pname ltr">' + esc(p.name || '') + '</span>' +
+          '<span class="pname ltr">' + esc(p.name || '') + age + '</span>' +
           '<span class="pstatus' + (isExec ? ' executed' : '') + '">' + esc(statusTxt) + '</span>' +
           '</figure>';
       }).join('');
