@@ -1,6 +1,6 @@
 [
-  { "name": "Amir Hossein Safari",         "status": "executed", "photo": "Amir Hossein Safari- executed.jpg" },
-  { "name": "Abolfazl Sepahi",             "status": "executed", "photo": "Abolfazl-executed.jpg" },
+  { "name": "Amir Hossein Safari",         "status": "executed", "photo": "" },
+  { "name": "Abolfazl Sepahi",             "status": "executed", "photo": "" },
   { "name": "Erfan Esfandiari",            "status": "executed", "photo": "" },
   { "name": "Gol-Mohammad Mohammadi",      "status": "executed", "photo": "" },
   { "name": "Mohammad Amini Dehaghani",    "status": "executed", "photo": "" },
@@ -15,7 +15,7 @@
   { "name": "Babak Alipour",               "status": "executed", "photo": "" },
   { "name": "Pouya Ghobadi",               "status": "executed", "photo": "" },
 
-  { "name": "Romina & Taraneh",            "status": "risk",     "photo": "Romina & Taraneh-risk.jpg" },
+  { "name": "Romina & Taraneh",            "status": "risk",     "photo": "" },
   { "name": "Shervin Bagherian",           "status": "risk",     "photo": "" },
   { "name": "Ali Dashti",                  "status": "risk",     "photo": "" },
   { "name": "Alireza Raisi",               "status": "risk",     "photo": "" },
@@ -29,5 +29,6 @@
   { "name": "Peyman Ganji",                "status": "risk",     "photo": "" },
   { "name": "Erfan Amiri",                 "status": "risk",     "photo": "" },
   { "name": "Mansour Jafari",              "status": "risk",     "photo": "" },
-  { "name": "Matin Mohammadi",             "status": "risk",     "photo": "" }
+  { "name": "Matin Mohammadi",             "status": "risk",     "photo": "" },
+  { "name": "Afrasyab",                    "status": "risk",     "photo": "" }
 ]
