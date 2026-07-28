@@ -205,10 +205,13 @@
     function emailSubject() { return EN.subject || ''; }              // always English
     // mailto cannot show images inline, so we add one clean link to a page that
     // shows the faces and stories of the people this concerns.
+    const AMNESTY_URL = 'https://www.amnesty.org/en/latest/news/2026/07/iran-end-escalating-campaign-of-arbitrary-executions-and-death-sentences-against-protesters/';
     function photoLinks() {
-      if (!people.length) return '';
       const url = new URL('people.html', location.href).href;
-      return '\n\nPlease see the young people this concerns — their faces and stories:\n' + url;
+      let s = '';
+      if (people.length) s += '\n\nPlease see the young people this concerns — their faces and stories:\n' + url;
+      s += '\n\nFor independent documentation, see Amnesty International:\n' + AMNESTY_URL;
+      return s;
     }
     function emailBody(mpName) {                                        // always English
       return T.en.greeting(mpName) + '\n\n' + (EN.body || '') + photoLinks();
