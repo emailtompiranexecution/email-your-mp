@@ -40,6 +40,7 @@
       font-weight: 600; padding: .8rem 1.5rem; border-radius: 8px;
     }
     .cta a:hover { background: var(--accent-dark); }
+    .credit { text-align: center; font-size: .75rem; color: var(--muted); margin-top: 1.5rem; }
     body.fa { direction: rtl; }
     body.fa .topbar { justify-content: flex-start; }
     .ltr { direction: ltr; unicode-bidi: isolate; }
@@ -57,6 +58,7 @@
     <p class="lead" id="lead"></p>
     <div class="gallery" id="gallery"></div>
     <div class="cta"><a id="ctaBtn" href="index.html"></a></div>
+    <p class="credit" id="credit"></p>
   </div>
 
   <script>
@@ -74,7 +76,8 @@
         executed: "Executed",
         risk: "At risk of execution",
         ageLabel: n => "Age " + n,
-        cta: "Email your MP →"
+        cta: "Email your MP →",
+        credit: "Photos and case details: Amnesty International, Iran Human Rights, HRANA, Hengaw."
       },
       fa: {
         title: "افرادی که این کارزار دربارهٔ آنهاست",
@@ -82,7 +85,8 @@
         executed: "اعدام‌شده",
         risk: "در خطر اعدام",
         ageLabel: n => n + " ساله",
-        cta: "به نمایندهٔ خود ایمیل بزنید ←"
+        cta: "به نمایندهٔ خود ایمیل بزنید ←",
+        credit: "عکس‌ها و جزئیات پرونده‌ها: عفو بین‌الملل، سازمان حقوق بشر ایران، هرانا، هنگاو."
       }
     };
 
@@ -98,6 +102,7 @@
       document.title = s.title;
       $('lead').textContent = s.lead;
       $('ctaBtn').textContent = s.cta;
+      $('credit').textContent = s.credit;
       $('langEn').classList.toggle('active', lang === 'en');
       $('langFa').classList.toggle('active', lang === 'fa');
       $('gallery').innerHTML = people.map(p => {
