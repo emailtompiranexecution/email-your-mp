@@ -14,6 +14,132 @@
     "note": "Publicly hanged on 28 July 2026 in Isfahan, alongside Amir Hossein Safari."
   },
   {
+    "file": "Gol-Mohammad Mohammadi.png",
+    "name": "Gol-Mohammad Mohammadi",
+    "status": "executed",
+    "age": "",
+    "note": "Executed on 19 July 2026, in the Isfahan protest case."
+  },
+  {
+    "file": "Mohammad Amini Dehaghani.png",
+    "name": "Mohammad Amini Dehaghani",
+    "status": "executed",
+    "age": "",
+    "note": "Executed on 15 July 2026 over the January 2026 Isfahan protests."
+  },
+  {
+    "file": "Mehdi Khaneki.png",
+    "name": "Mehdi Khaneki",
+    "status": "executed",
+    "age": "",
+    "note": "Executed on 22 July 2026 in Karaj, Alborz province."
+  },
+  {
+    "file": "Javad-Zamani.jpg",
+    "name": "Javad Zamani",
+    "status": "executed",
+    "age": "",
+    "note": "Executed on 16 June 2026 over protests in Shahroud, Semnan province."
+  },
+  {
+    "file": "Abolfazl-Saedi.jpg",
+    "name": "Abolfazl Saedi",
+    "status": "executed",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Ashkan Maleki.jpg",
+    "name": "Ashkan Maleki",
+    "status": "executed",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Mehrdad Mohammadinia.jpg",
+    "name": "Mehrdad Mohammadinia",
+    "status": "executed",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Amirhossein Hatami.jpg",
+    "name": "Amirhossein Hatami",
+    "status": "executed",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Akbar (Shahrokh) Daneshvarkar.png",
+    "name": "Akbar (Shahrokh) Daneshvarkar",
+    "status": "executed",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Mohammad Taghavi Sangdehi.png",
+    "name": "Mohammad Taghavi Sangdehi",
+    "status": "executed",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Babak Alipour.png",
+    "name": "Babak Alipour",
+    "status": "executed",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Pouya Ghobadi.jpg",
+    "name": "Pouya Ghobadi",
+    "status": "executed",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Romain-Traneh.jpg",
+    "name": "Romina & Taraneh",
+    "status": "risk",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Shervin Bagherian.jpg",
+    "name": "Shervin Bagherian",
+    "status": "risk",
+    "age": "18",
+    "note": "Held incommunicado 21 days and tortured; a forced 'confession' was aired before his trial."
+  },
+  {
+    "file": "Ali Dashti.png",
+    "name": "Ali Dashti",
+    "status": "risk",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Alireza Raisi.jpg",
+    "name": "Alireza Raisi",
+    "status": "risk",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Abolfazl Ebrahimi.png",
+    "name": "Abolfazl Ebrahimi",
+    "status": "risk",
+    "age": "",
+    "note": ""
+  },
+  {
+    "file": "Alireza Sepahi.png",
+    "name": "Alireza Sepahi",
+    "status": "risk",
+    "age": "",
+    "note": ""
+  },
+  {
     "file": "Benyamin Naghdi.jpg",
     "name": "Benyamin Naghdi",
     "status": "risk",
@@ -24,132 +150,6 @@
     "file": "",
     "name": "Erfan Esfandiari",
     "status": "executed",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Gol-Mohammad Mohammadi",
-    "status": "executed",
-    "age": "",
-    "note": "Executed on 19 July 2026, in the Isfahan protest case."
-  },
-  {
-    "file": "",
-    "name": "Mohammad Amini Dehaghani",
-    "status": "executed",
-    "age": "",
-    "note": "Executed on 15 July 2026 over the January 2026 Isfahan protests."
-  },
-  {
-    "file": "",
-    "name": "Mehdi Khaneki",
-    "status": "executed",
-    "age": "",
-    "note": "Executed on 22 July 2026 in Karaj, Alborz province."
-  },
-  {
-    "file": "",
-    "name": "Javad Zamani",
-    "status": "executed",
-    "age": "",
-    "note": "Executed on 16 June 2026 over protests in Shahroud, Semnan province."
-  },
-  {
-    "file": "",
-    "name": "Abolfazl Saedi",
-    "status": "executed",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Ashkan Maleki",
-    "status": "executed",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Mehrdad Mohammadinia",
-    "status": "executed",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Amirhossein Hatami",
-    "status": "executed",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Akbar (Shahrokh) Daneshvarkar",
-    "status": "executed",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Mohammad Taghavi Sangdehi",
-    "status": "executed",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Babak Alipour",
-    "status": "executed",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Pouya Ghobadi",
-    "status": "executed",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Romina & Taraneh",
-    "status": "risk",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Shervin Bagherian",
-    "status": "risk",
-    "age": "18",
-    "note": "Held incommunicado 21 days and tortured; a forced 'confession' was aired before his trial."
-  },
-  {
-    "file": "",
-    "name": "Ali Dashti",
-    "status": "risk",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Alireza Raisi",
-    "status": "risk",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Abolfazl Ebrahimi",
-    "status": "risk",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Alireza Sepahi",
-    "status": "risk",
     "age": "",
     "note": ""
   },
