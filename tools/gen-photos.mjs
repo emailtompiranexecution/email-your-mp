@@ -17,6 +17,7 @@ const PHOTO_DIR = 'photo';
 const IMAGE_RE = /\.(jpe?g|png|webp|gif)$/i;
 
 const normStatus = s => (/exec/i.test(s || '') ? 'executed' : 'risk');
+const normName = s => String(s).toLowerCase().replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ').trim();
 
 function parseFromFilename(file) {
   const base = file.replace(/\.[^.]+$/, '');
@@ -51,10 +52,12 @@ for (const p of manual) {
 }
 
 // 2) any photos not already referenced -> auto-added from their filename
+const manualNames = new Set(out.map(p => normName(p.name)));
 for (const f of files.sort((a, b) => a.localeCompare(b))) {
   if (used.has(f)) continue;
   const parsed = parseFromFilename(f);
   if (!parsed.name || /^(executed|risk)$/i.test(parsed.name)) continue; // skip generic (e.g. Risk.png)
+  if (manualNames.has(normName(parsed.name))) continue;                  // variant filename of a listed person
   out.push({ ...parsed, age: '', note: '' });
 }
 
