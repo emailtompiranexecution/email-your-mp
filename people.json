@@ -29,6 +29,5 @@
   { "name": "Peyman Ganji",                "status": "risk",     "photo": "Peyman Ganji.jpg", "age": "33", "note": "Says he 'confessed' under torture and retracted it at trial; denies the charges." },
   { "name": "Erfan Amiri",                 "status": "risk",     "photo": "Erfan Amiri.jpg", "age": "17", "note": "A child — 17 at the time of the alleged offence, whose execution international law absolutely prohibits." },
   { "name": "Mansour Jafari",              "status": "risk",     "photo": "Mansour Jafari.jpg", "age": "", "note": "A child at the time of the alleged offence." },
-  { "name": "Matin Mohammadi",             "status": "risk",     "photo": "Matin Mohammadi.jpg", "age": "17", "note": "A child at the time of the alleged offence." },
-  { "name": "Afrasyab",                    "status": "risk",     "photo": "", "age": "", "note": "" }
+  { "name": "Matin Mohammadi",             "status": "risk",     "photo": "Matin Mohammadi.jpg", "age": "17", "note": "A child at the time of the alleged offence." }
 ]
