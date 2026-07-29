@@ -28,6 +28,13 @@
     "note": "Publicly hanged on 28 July 2026 in Isfahan, alongside Amir Hossein Safari."
   },
   {
+    "file": "Erfan Esfandiari.png",
+    "name": "Erfan Esfandiari",
+    "status": "executed",
+    "age": "",
+    "note": ""
+  },
+  {
     "file": "Gol-Mohammad Mohammadi.png",
     "name": "Gol-Mohammad Mohammadi",
     "status": "executed",
@@ -140,6 +147,13 @@
     "note": ""
   },
   {
+    "file": "Amirhossein Ebrahimi.png",
+    "name": "Amirhossein Ebrahimi",
+    "status": "risk",
+    "age": "",
+    "note": ""
+  },
+  {
     "file": "Amirhossein Maleki.png",
     "name": "Amirhossein Maleki",
     "status": "risk",
@@ -194,26 +208,5 @@
     "status": "risk",
     "age": "17",
     "note": "A child at the time of the alleged offence."
-  },
-  {
-    "file": "",
-    "name": "Erfan Esfandiari",
-    "status": "executed",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Amirhossein Ebrahimi",
-    "status": "risk",
-    "age": "",
-    "note": ""
-  },
-  {
-    "file": "",
-    "name": "Afrasyab",
-    "status": "risk",
-    "age": "",
-    "note": ""
   }
 ]
