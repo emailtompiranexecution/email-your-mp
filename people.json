@@ -1,6 +1,7 @@
 [
   { "name": "Amirhossein Hatami",          "status": "executed", "photo": "Amirhossein Hatami.jpg", "age": "", "note": "" },
   { "name": "Romina & Taraneh",            "status": "risk",     "photo": "Romain-Traneh.jpg", "age": "", "note": "" },
+  { "name": "Kaveh Arabian",               "status": "risk",     "photo": "kaveh_arabian.jpg", "age": "33", "note": "Father of a baby." },
   { "name": "Amir Hossein Safari",         "status": "executed", "photo": "Amir Hossein Safari.jpg", "age": "28", "note": "Publicly hanged on 28 July 2026 in Isfahan's Alikhani Square." },
   { "name": "Abolfazl Sepahi",             "status": "executed", "photo": "Abolfazl Sepahi.jpg", "age": "23", "note": "Publicly hanged on 28 July 2026 in Isfahan, alongside Amir Hossein Safari." },
   { "name": "Erfan Esfandiari",            "status": "executed", "photo": "Erfan Esfandiari.png", "age": "", "note": "" },
